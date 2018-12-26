@@ -51,16 +51,230 @@ Not applicable.
 
    2. Perform the below given activities:
    a. Create classification model using different random forest models
-   b. Verify model goodness of fit
-   c. Apply all the model validation techniques
-   d. Make conclusions
-   e. Plot importance of variables
+   Answer:
+   > weight_lifting <- read.csv("D:/ACADGILD/Excel files/weight_lifting_exercises.csv")
+> View(weight_lifting)
+> str(weight_lifting)
+'data.frame':	4024 obs. of  59 variables:
+ $ user_name           : Factor w/ 5 levels "adelmo","carlitos",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ raw_timestamp_part_1: int  1322489729 1322489729 1322489729 1322489729 1322489729 1322489729 1322489729 1322489729 1322489729 1322489729 ...
+ $ raw_timestamp_part_2: int  34670 62641 70653 82654 90637 170626 190665 242723 267551 274689 ...
+ $ cvtd_timestamp      : Factor w/ 7 levels "2/12/2011 13:35",..: 2 2 2 2 2 2 2 2 2 2 ...
+ $ new_window          : Factor w/ 2 levels "no","yes": 1 1 1 1 1 1 1 1 1 1 ...
+ $ num_window          : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ roll_belt           : num  3.7 3.66 3.58 3.56 3.57 3.45 3.31 2.91 2.31 2 ...
+ $ pitch_belt          : num  41.6 42.8 43.7 44.4 45.1 45.6 46.2 46.9 47.4 47.7 ...
+ $ yaw_belt            : num  -82.8 -82.5 -82.3 -82.1 -81.9 -81.9 -81.9 -82.2 -82.6 -82.8 ...
+ $ total_accel_belt    : int  3 2 1 1 1 1 3 4 2 3 ...
+ $ gyros_belt_x        : num  2.02 1.96 1.88 1.8 1.77 1.75 1.78 1.75 1.65 1.48 ...
+ $ gyros_belt_y        : num  0.18 0.14 0.08 0.03 0 -0.03 -0.06 -0.06 -0.03 -0.06 ...
+ $ gyros_belt_z        : num  0.02 0.05 0.05 0.08 0.13 0.16 0.15 0.23 0.33 0.21 ...
+ $ accel_belt_x        : int  -3 -2 -2 -6 -4 1 1 2 -1 -18 ...
+ $ accel_belt_y        : int  -18 -13 -6 -5 -9 -9 -24 -36 -19 18 ...
+ $ accel_belt_z        : int  22 16 8 7 0 -5 -8 -9 -7 1 ...
+ $ magnet_belt_x       : int  387 405 409 422 418 432 438 440 443 449 ...
+ $ magnet_belt_y       : int  525 512 511 513 508 510 508 503 507 499 ...
+ $ magnet_belt_z       : int  -267 -254 -244 -221 -208 -189 -176 -163 -140 -132 ...
+ $ roll_arm            : num  132 129 125 120 115 110 104 98.6 93.2 88.5 ...
+ $ pitch_arm           : num  -43.7 -45.3 -46.8 -48.1 -49.1 -49.6 -49.9 -49.7 -49 -48.1 ...
+ $ yaw_arm             : num  -53.6 -49 -43.7 -38.1 -31.7 -25.8 -18.5 -11.4 -4.49 1.82 ...
+ $ total_accel_arm     : int  38 38 35 35 34 33 29 28 27 22 ...
+ $ gyros_arm_x         : num  2.65 2.79 2.91 3.08 3.2 3.31 3.5 3.53 3.4 3.48 ...
+ $ gyros_arm_y         : num  -0.61 -0.64 -0.69 -0.72 -0.77 -0.83 -0.83 -0.83 -0.83 -0.8 ...
+ $ gyros_arm_z         : num  -0.02 -0.11 -0.15 -0.23 -0.25 -0.3 -0.31 -0.21 -0.11 -0.15 ...
+ $ accel_arm_x         : int  143 146 156 158 163 160 165 153 143 135 ...
+ $ accel_arm_y         : int  30 35 44 52 55 59 67 70 78 96 ...
+ $ accel_arm_z         : int  -346 -339 -307 -305 -288 -274 -225 -218 -205 -134 ...
+ $ magnet_arm_x        : int  556 599 613 646 670 696 721 725 740 741 ...
+ $ magnet_arm_y        : int  -205 -206 -198 -186 -175 -174 -161 -152 -133 -115 ...
+ $ magnet_arm_z        : int  -374 -335 -319 -268 -241 -193 -121 -105 -43 14 ...
+ $ roll_dumbbell       : num  51.2 55.8 55.5 55.9 55.2 ...
+ $ pitch_dumbbell      : num  11.7 9.65 6.88 11.08 11.43 ...
+ $ yaw_dumbbell        : num  104.3 100.2 101.1 99.8 100.4 ...
+ $ total_accel_dumbbell: int  4 4 4 5 4 4 4 4 4 4 ...
+ $ gyros_dumbbell_x    : num  -0.31 -0.31 -0.31 -0.31 -0.31 -0.31 -0.29 -0.29 -0.29 -0.29 ...
+ $ gyros_dumbbell_y    : num  0.16 0.14 0.16 0.16 0.14 0.14 0.14 0.14 0.14 0.14 ...
+ $ gyros_dumbbell_z    : num  0.08 0.07 0.05 0.07 0.07 0.07 0.07 0.07 0.08 0.07 ...
+ $ accel_dumbbell_x    : int  5 4 3 5 5 6 6 3 6 5 ...
+ $ accel_dumbbell_y    : int  21 22 23 24 23 22 22 23 22 21 ...
+ $ accel_dumbbell_z    : int  37 35 37 38 37 36 35 35 36 34 ...
+ $ magnet_dumbbell_x   : int  -471 -472 -468 -469 -468 -473 -471 -476 -474 -470 ...
+ $ magnet_dumbbell_y   : int  191 184 190 184 189 188 183 184 186 188 ...
+ $ magnet_dumbbell_z   : int  277 281 275 285 292 278 284 283 278 283 ...
+ $ roll_forearm        : num  -111 -112 -114 -115 -117 -118 -120 -122 -124 -126 ...
+ $ pitch_forearm       : num  26.5 26.2 26 25.8 25.5 25.1 24.8 24.5 24 23.4 ...
+ $ yaw_forearm         : num  138 138 137 137 137 137 136 135 135 134 ...
+ $ total_accel_forearm : int  30 31 32 33 34 36 37 37 38 39 ...
+ $ gyros_forearm_x     : num  -0.05 -0.06 -0.05 0.02 0.08 0.14 0.21 0.27 0.37 0.43 ...
+ $ gyros_forearm_y     : num  -0.37 -0.37 -0.27 -0.24 -0.27 -0.29 -0.24 -0.18 -0.21 -0.26 ...
+ $ gyros_forearm_z     : num  -0.43 -0.59 -0.72 -0.79 -0.82 -0.82 -0.84 -0.85 -0.87 -0.89 ...
+ $ accel_forearm_x     : int  -170 -178 -182 -185 -188 -208 -215 -212 -221 -220 ...
+ $ accel_forearm_y     : int  155 164 172 182 195 207 214 221 223 239 ...
+ $ accel_forearm_z     : int  184 182 185 188 188 190 190 190 194 196 ...
+ $ magnet_forearm_x    : int  -1160 -1150 -1130 -1120 -1100 -1090 -1060 -1060 -1040 -1020 ...
+ $ magnet_forearm_y    : int  1400 1410 1400 1400 1400 1400 1410 1410 1400 1410 ...
+ $ magnet_forearm_z    : int  -876 -871 -863 -855 -843 -838 -831 -829 -819 -804 ...
+ $ classe              : Factor w/ 5 levels "A","B","C","D",..: 5 5 5 5 5 5 5 5 5 5 ...
+> # tree
+> library(caTools)
+> library(tree)
+> set.seed(1)
+> sam<- sample(x=1: nrow(weight_lifting), size = 0.80*nrow(weight_lifting))
+> train1<- weight_lifting[sam, ]
+> table(weight_lifting$default)
+  < table of extent 0 >
+> table(train1$default)
+  < table of extent 0 >
+> test1<- weight_lifting[-sam, ]
+> table(test1$default)
+  < table of extent 0 > 
+
+model_tree1<- tree(default~., data = train1)
+summary(model_tree1)
+
+plot(model_tree1); text(model_tree1, pretty = 0, cex = 0.75)
+
+pred_tree1<- predict(model_tree1, newdata = test1,
+                     type = 'class')
+
+conf_tree1<- table(test1$default, pred_tree1)
+conf_tree1
+
+OAA_tree1<- (conf_tree1[1,1]+conf_tree1[2,2])/sum(conf_tree1)
+OAA_tree1
+
+#random forest
+library(randomForest)
+model_rf1<- randomForest(default~., data = train1)
+model_rf1
+
+summary(model_rf1)
+
+b. Verify model goodness of fit
+c. Apply all the model validation techniques
+d. Make conclusions
+e. Plot importance of variables
+Answer:
+> #validation 
+> #interpretation, Accuracy and model goodness  of our model
+> #verify model goodness of fit
+> library(rpart)
+> library(caret)
+> # define training control
+> train_control<- trainControl(method="cv", number=10)
+> # train the model 
+> #method rf
+> model<- train(default~., data=train1, trControl=train_control, method="rf")
+> model
+
+Call:  glm(formula = DrugR ~ BP + Chlstrl + Age + Prgnt + AnxtyLH, family = binomial, 
+    data = cs2m)
+
+Coefficients:
+(Intercept)           BP      Chlstrl          Age        Prgnt      AnxtyLH  
+  -36.83419     -0.01172      0.04426      0.20251     24.53063     18.37265  
+
+Degrees of Freedom: 29 Total (i.e. Null);  24 Residual
+Null Deviance:	    41.59 
+Residual Deviance: 19.34 	AIC: 31.34
+> 
+
+> # make predictions
+> predictions<- predict(model,test1)
+
+> # append predictions
+> pred<- cbind(test1,predictions)
+
+> # summarize results
+> confusionMatrix<- confusionMatrix(pred$predictions,pred$default)
+
+> confusionMatrix
+function (data, ...) 
+{
+    UseMethod("confusionMatrix")
+}
+<bytecode: 0x1d791468>
+<environment: namespace:caret>
+> 
+> # define training control
+> train_control<- trainControl(method="cv", number=10)
+> # train the model
+> # method boosted tree
+> model<- train(default~., data=train1, trControl=train_control, method="bstTree")
+Error in eval(predvars, data, env) : object 'default' not found
+> model
+
+Call:  glm(formula = DrugR ~ BP + Chlstrl + Age + Prgnt + AnxtyLH, family = binomial, 
+    data = cs2m)
+
+Coefficients:
+(Intercept)           BP      Chlstrl          Age        Prgnt      AnxtyLH  
+  -36.83419     -0.01172      0.04426      0.20251     24.53063     18.37265  
+
+Degrees of Freedom: 29 Total (i.e. Null);  24 Residual
+Null Deviance:	    41.59 
+Residual Deviance: 19.34 	AIC: 31.34
+
+> # make predictions
+> predictions<- predict(model,test1)
+
+> # append predictions
+> pred<- cbind(test1,predictions)
+
+> # summarize results
+> confusionMatrix<- confusionMatrix(pred$predictions,pred$churn)
+
+> confusionMatrix
+function (data, ...) 
+{
+    UseMethod("confusionMatrix")
+}
+<bytecode: 0x1d791468>
+<environment: namespace:caret>
+> #how do we create a cross validation scheme
+> control <- trainControl(method = 'repeatedcv',
++                         number = 10,
++                         repeats = 3)
+> seed <-7
+> metric <- 'Accuracy'
+> set.seed(seed)
+> mtry <- sqrt(ncol(train1))
+> tunegrid <- expand.grid(.mtry=mtry)
+> rf_default <- train(default~., 
++                     data = train1,
++                     method = 'rf',
++                     metric = metric,
++                     tuneGrid = tunegrid,
++                     trControl = control)
+
+> print(rf_default)
+
+> #prediction of model_rf1
+> pred_rf1<- predict(model_rf1, test1, type = 'class')
+ 
+> head(pred_rf1, 15)
+> #interpretation, Accuracy and model goodness  of our model
+> #verify model goodness of fit
+> #summary
+> summary(model_rf1)
+
+> #confusion matrix of model_rf1
+> conf_rf1<- table(test1$default, pred_rf1)
+
+> conf_rf1> #accuracy of model_rf1
+> OAA_rf1<- (conf_rf1[1,1]+conf_rf1[2,2])/sum(conf_rf1)
+> OAA_rf1
+
+> #plotting imp of variance 
+> library(caret)
+> importance(model_rf1)
+> varImp(model_rf1)
+> varImpPlot(model_rf1, col = 'red')
+  object 'model_rf1' not found
+> 
 
 
-
-
-                                                                                          3
-Data Analytics
+Data Analytics
 
 6. Expected Output
 N/A
